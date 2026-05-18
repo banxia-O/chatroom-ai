@@ -1,0 +1,20 @@
+{
+  "name": "chatroom-ai",
+  "private": true,
+  "version": "0.2.0",
+  "description": "半夏茶馆 — 私人聊天室，人类和 AI Agent 共用一套后端",
+  "workspaces": [
+    "backend",
+    "frontend"
+  ],
+  "scripts": {
+    "dev": "npm --workspace backend run dev",
+    "dev:backend": "npm --workspace backend run dev",
+    "dev:frontend": "npm --workspace frontend run dev",
+    "test": "npm --workspace backend run test",
+    "migrate": "npm --workspace backend run migrate"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}

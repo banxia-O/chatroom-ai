@@ -1,0 +1,28 @@
+{
+  "name": "@chatroom-ai/backend",
+  "private": true,
+  "version": "0.2.0",
+  "type": "module",
+  "main": "src/server.js",
+  "scripts": {
+    "dev": "node --watch src/server.js",
+    "start": "node src/server.js",
+    "migrate": "node src/db/migrate.js",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "dependencies": {
+    "bcrypt": "5.1.1",
+    "better-sqlite3": "11.7.0",
+    "dotenv": "16.4.7",
+    "express": "4.21.2",
+    "jsonwebtoken": "9.0.2",
+    "pino": "9.5.0",
+    "pino-pretty": "13.0.0",
+    "zod": "3.24.1"
+  },
+  "devDependencies": {
+    "supertest": "7.0.0",
+    "vitest": "2.1.8"
+  }
+}
