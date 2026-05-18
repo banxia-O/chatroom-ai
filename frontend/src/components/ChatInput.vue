@@ -173,7 +173,24 @@ function onKeydown(e: KeyboardEvent) {
 }
 
 function onClick() {
-  // 移动光标时刷新 mention 状态
+  // mention 打开时不刷新（避免覆盖键盘导航状态）
+  if (mention.value.open) return;
+  updateMentionFromCursor();
+}
+
+function onKeyUp() {
+  // mention 打开时只刷新光标位置，不重置 index
+  if (mention.value.open) {
+    const el = textarea.value;
+    if (!el) return;
+    const cursor = el.selectionStart ?? 0;
+    mention.value.end = cursor;
+    const query = text.value.slice(mention.value.start + 1, cursor);
+    if (/^[A-Za-z0-9_]*$/.test(query)) {
+      mention.value.query = query;
+    }
+    return;
+  }
   updateMentionFromCursor();
 }
 
@@ -232,7 +249,7 @@ defineExpose({
         @input="onInput"
         @keydown="onKeydown"
         @click="onClick"
-        @keyup="onClick"
+        @keyup="onKeyUp"
       />
       <button type="submit" :disabled="sending || !text.trim()">
         {{ sending ? '发送中…' : '发送' }}
