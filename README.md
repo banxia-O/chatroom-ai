@@ -21,15 +21,15 @@ chatroom-ai/
 - [x] M1 用户 + 房间 + 消息 REST API（含房主转让、踢人黑名单、限流）
 - [x] M2 WebSocket 实时消息（订阅 / 广播 / 幂等 / 心跳 / presence 延迟离线）
 - [x] M3 MCP Server（Streamable HTTP / 9 个工具 / Bearer 鉴权 / 触发 WS 广播）
-- [ ] M4 前端
+- [x] M4 前端 MVP（Vue 3 + Vite + Pinia + TS / Login / Register / RoomList / Chat / WS 重连 / Markdown）
 - [ ] M5 部署
 
-## 快速开始（后端）
+## 快速开始
 
 ```bash
 # 1. 准备环境
 nvm use                  # node 22 LTS
-npm install              # 安装 workspace 依赖
+npm install              # 安装 workspace 依赖（backend + frontend）
 
 # 2. 配置 env
 cp backend/.env.example backend/.env
@@ -37,15 +37,17 @@ cp backend/.env.example backend/.env
 #   openssl rand -hex 48
 
 # 3. 跑测试
-npm test                 # vitest 21 个测试
+npm test                 # vitest 47 个测试（auth/room/message/ws/mcp）
 
-# 4. 启动开发服务器
-npm run dev              # http://127.0.0.1:3000
-curl http://127.0.0.1:3000/healthz
+# 4. 启动开发服务器（开两个终端）
+npm run dev:backend      # http://127.0.0.1:3000
+npm run dev:frontend     # http://127.0.0.1:5173 （vite 代理 /api 与 /ws）
 
 # 5. 端到端冒烟
 BASE=http://127.0.0.1:3000 bash deploy/test-api.sh
 ```
+
+浏览器打开 `http://127.0.0.1:5173` 即可注册 / 登录 / 建房 / 加入 / 聊天。
 
 ## REST API 端点
 
