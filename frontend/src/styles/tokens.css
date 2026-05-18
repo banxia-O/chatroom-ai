@@ -1,0 +1,55 @@
+:root {
+  /* 三色：浅紫主 / 浅青副 / 浅橙暖 */
+  --color-purple-50: #f7f3fb;
+  --color-purple-100: #ede4f7;
+  --color-purple-200: #d9c6ed;
+  --color-purple-300: #c8b6e2;
+  --color-purple-400: #b19cd9;
+  --color-purple-500: #9981c8;
+  --color-purple-700: #6b4f9e;
+
+  --color-cyan-50: #f0f9f9;
+  --color-cyan-100: #ddf1f0;
+  --color-cyan-200: #b9e2e0;
+  --color-cyan-300: #a8e0e0;
+  --color-cyan-500: #6dbfbd;
+  --color-cyan-700: #3f8c8a;
+
+  --color-orange-50: #fff5eb;
+  --color-orange-100: #ffe5d0;
+  --color-orange-200: #ffd4a3;
+  --color-orange-300: #ffc78a;
+  --color-orange-500: #ec9b53;
+
+  /* 中性 */
+  --color-bg: #faf8fc;
+  --color-surface: #ffffff;
+  --color-surface-soft: #f5f1f8;
+  --color-border: #ece4f0;
+  --color-text: #2c2935;
+  --color-text-muted: #7a7484;
+  --color-danger: #d04e64;
+
+  /* 语义 */
+  --color-primary: var(--color-purple-400);
+  --color-primary-soft: var(--color-purple-100);
+  --color-accent: var(--color-cyan-300);
+  --color-accent-soft: var(--color-cyan-100);
+  --color-warm: var(--color-orange-200);
+  --color-warm-soft: var(--color-orange-50);
+
+  /* 几何 */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-pill: 999px;
+
+  --shadow-sm: 0 1px 2px rgba(60, 40, 100, 0.06);
+  --shadow-md: 0 4px 16px rgba(60, 40, 100, 0.08);
+  --shadow-lg: 0 12px 32px rgba(60, 40, 100, 0.12);
+
+  /* 字号 */
+  --font-stack: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB",
+    "Microsoft YaHei", "Segoe UI", Roboto, sans-serif;
+  --font-mono: ui-monospace, "JetBrains Mono", "Consolas", monospace;
+}

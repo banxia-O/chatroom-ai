@@ -1,0 +1,118 @@
+# 半夏茶馆 Nginx 站点配置示例
+#
+# 安装：
+#   1) 把本文件复制到 /etc/nginx/sites-available/banxia
+#   2) ln -s /etc/nginx/sites-available/banxia /etc/nginx/sites-enabled/banxia
+#   3) 替换 server_name 与证书路径
+#   4) nginx -t && systemctl reload nginx
+#
+# 假设：
+#   - 后端进程跑在 127.0.0.1:3000（PM2 拉起，见 ecosystem.config.cjs）
+#   - 前端静态产物在 /srv/banxia/frontend/dist（npm --workspace frontend run build 的输出）
+#   - Let's Encrypt 证书已签发（certbot）
+
+# --- HTTP → HTTPS 跳转 ---
+server {
+    listen 80;
+    listen [::]:80;
+    server_name md-banxia.cn;
+
+    # certbot 续期挑战
+    location /.well-known/acme-challenge/ {
+        root /var/www/certbot;
+    }
+
+    location / {
+        return 301 https://$host$request_uri;
+    }
+}
+
+# --- HTTPS 主站 ---
+server {
+    listen 443 ssl http2;
+    listen [::]:443 ssl http2;
+    server_name md-banxia.cn;
+
+    # 证书（替换为实际路径）
+    ssl_certificate     /etc/letsencrypt/live/md-banxia.cn/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/md-banxia.cn/privkey.pem;
+    ssl_protocols TLSv1.2 TLSv1.3;
+    ssl_prefer_server_ciphers on;
+    ssl_session_cache shared:SSL:10m;
+    ssl_session_timeout 1d;
+
+    # 安全 headers
+    add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;
+    add_header X-Content-Type-Options "nosniff" always;
+    add_header X-Frame-Options "DENY" always;
+    add_header Referrer-Policy "strict-origin-when-cross-origin" always;
+    # CSP：前端无 inline script；连接到自身的 ws/https
+    add_header Content-Security-Policy "default-src 'self'; img-src 'self' data: https:; style-src 'self' 'unsafe-inline'; font-src 'self' data:; connect-src 'self' wss: https:; frame-ancestors 'none'; base-uri 'self'; form-action 'self'" always;
+
+    # 反向上传 / 消息体大小（消息正文 4KB，留足够余量）
+    client_max_body_size 256k;
+
+    # 健康检查
+    location = /healthz {
+        proxy_pass http://127.0.0.1:3000;
+        access_log off;
+    }
+
+    # REST API
+    location /api/ {
+        proxy_pass http://127.0.0.1:3000;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+
+    # MCP（Streamable HTTP，可能走 SSE，关 buffering）
+    location /mcp {
+        proxy_pass http://127.0.0.1:3000;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_buffering off;
+        proxy_read_timeout 3600s;
+    }
+
+    # WebSocket
+    location /ws {
+        proxy_pass http://127.0.0.1:3000;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        # 默认 60s 会把空闲 ws 断掉；客户端 25s 心跳，但仍把上限拉到 1 小时兜底
+        proxy_read_timeout 3600s;
+        proxy_send_timeout 3600s;
+    }
+
+    # 前端 SPA
+    root /srv/banxia/frontend/dist;
+    index index.html;
+
+    # 静态资源带 hash 文件名 → 长缓存
+    location ~* ^/assets/.+\.(?:js|css|woff2?|png|jpg|jpeg|gif|svg|ico)$ {
+        expires 1y;
+        add_header Cache-Control "public, immutable";
+        try_files $uri =404;
+    }
+
+    # SPA fallback：history 模式所有未命中路径回到 index.html
+    location / {
+        try_files $uri $uri/ /index.html;
+        add_header Cache-Control "no-cache";
+    }
+
+    # 日志
+    access_log /var/log/nginx/banxia.access.log;
+    error_log  /var/log/nginx/banxia.error.log warn;
+}

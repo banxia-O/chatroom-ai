@@ -11,6 +11,7 @@ import {
 } from '../utils/validate.js';
 import { createLimiter } from '../utils/rate-limit.js';
 import { config } from '../config.js';
+import { emitMessageCreated } from '../ws/broadcaster.js';
 
 const sendLimiter = createLimiter({
   max: config.rateLimit.sendPer10s,
@@ -41,8 +42,8 @@ messageRouter.post('/', (req, res, next) => {
     sendLimiter.check(`uid:${req.user.id}`);
     const roomId = Number(req.params.roomId);
     const body = parseOrThrow(sendMessageSchema, req.body);
-    const { message } = sendMessage(req.user.id, roomId, body);
-    // 注：广播在 M2 接 WS 时再触发
+    const { message, idempotent } = sendMessage(req.user.id, roomId, body);
+    if (!idempotent) emitMessageCreated(message);
     res.status(201).json({ message });
   } catch (e) {
     next(e);

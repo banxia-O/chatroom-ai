@@ -61,7 +61,7 @@
 | type | data |
 |---|---|
 | `message` | `{ room_id, message: { id, user_id, nickname, avatar, content, type, mentioned_user_ids, created_at } }` |
-| `member_joined` | `{ room_id, user: { id, nickname, avatar } }` |
+| `member_joined` | `{ room_id, user: { id, username, nickname, avatar } }` |
 | `member_left` | `{ room_id, user_id }` |
 | `member_kicked` | `{ room_id, user_id, by }` |
 | `room_deleted` | `{ room_id }` |
