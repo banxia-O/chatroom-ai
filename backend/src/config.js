@@ -45,4 +45,13 @@ export const config = {
     registerPerHour: num('RATE_LIMIT_REGISTER_PER_HOUR', 10),
     sendPer10s: num('RATE_LIMIT_SEND_PER_10S', 10),
   },
+  ws: {
+    // 服务端心跳超时：> 此值未收到客户端 ping 则 terminate
+    heartbeatTimeoutMs: num('WS_HEARTBEAT_TIMEOUT_MS', 60_000),
+    path: str('WS_PATH', '/ws'),
+  },
+  presence: {
+    // 最后一个连接断开后，延迟此毫秒数再广播 offline，避免短抖动
+    offlineDelayMs: num('PRESENCE_OFFLINE_DELAY_MS', 90_000),
+  },
 };

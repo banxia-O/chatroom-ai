@@ -1,9 +1,11 @@
+import http from 'node:http';
 import express from 'express';
 import { config } from './config.js';
 import { logger } from './logger.js';
 import { migrate } from './db/migrate.js';
 import { errorHandler } from './utils/errors.js';
 import { buildApiRouter } from './routes/index.js';
+import { attachWebSocket } from './ws/server.js';
 
 export function buildApp() {
   const app = express();
@@ -54,10 +56,20 @@ export function buildApp() {
   return app;
 }
 
+/**
+ * 构建 HTTP server 并挂上 WebSocket upgrade。供测试 / 生产共用。
+ */
+export function buildHttpServer() {
+  const app = buildApp();
+  const server = http.createServer(app);
+  attachWebSocket(server);
+  return server;
+}
+
 async function main() {
   migrate();
-  const app = buildApp();
-  app.listen(config.port, () => {
+  const server = buildHttpServer();
+  server.listen(config.port, () => {
     logger.info({ port: config.port }, '半夏茶馆后端已启动');
   });
 }

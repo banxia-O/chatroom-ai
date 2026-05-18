@@ -19,7 +19,7 @@ chatroom-ai/
 
 - [x] M0 项目骨架（npm workspaces、`.nvmrc`、健康检查、自动 migrate）
 - [x] M1 用户 + 房间 + 消息 REST API（含房主转让、踢人黑名单、限流）
-- [ ] M2 WebSocket 实时消息
+- [x] M2 WebSocket 实时消息（订阅 / 广播 / 幂等 / 心跳 / presence 延迟离线）
 - [ ] M3 MCP Server
 - [ ] M4 前端
 - [ ] M5 部署
@@ -70,7 +70,14 @@ GET    /api/rooms/:id/messages
 POST   /api/rooms/:id/messages
 ```
 
-WebSocket 协议见 [`docs/ws-protocol.md`](./docs/ws-protocol.md)（M2）。
+WebSocket 协议见 [`docs/ws-protocol.md`](./docs/ws-protocol.md)。两个 wscat 客户端互发示例：
+
+```bash
+# 注册 alice / bob，建房，bob 加入，取两个 token 和 room_id（见 deploy/test-api.sh）
+wscat -c ws://127.0.0.1:3000/ws -s "bearer,$ALICE_TOKEN"
+> {"type":"subscribe","id":"s1","data":{"room_id":1}}
+> {"type":"send","id":"m1","data":{"room_id":1,"content":"hi","client_msg_id":"cm-1"}}
+```
 MCP 工具 schema 见 [`docs/mcp-tools.md`](./docs/mcp-tools.md)（M3）。
 
 ## 关键设计决策
