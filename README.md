@@ -21,8 +21,8 @@ chatroom-ai/
 - [x] M1 用户 + 房间 + 消息 REST API（含房主转让、踢人黑名单、限流）
 - [x] M2 WebSocket 实时消息（订阅 / 广播 / 幂等 / 心跳 / presence 延迟离线）
 - [x] M3 MCP Server（Streamable HTTP / 9 个工具 / Bearer 鉴权 / 触发 WS 广播）
-- [x] M4 前端 MVP（Vue 3 + Vite + Pinia + TS / Login / Register / RoomList / Chat / WS 重连 / Markdown）
-- [ ] M5 部署
+- [x] M4 前端（Vue 3 + Vite + Pinia + TS / 四视图 / @ 自动补全 / 踢人 / typing / 改密码 / 移动端抽屉）
+- [x] M5 部署（Nginx 反代 + PM2 + SQLite 在线热备份 + Let's Encrypt 步骤）
 
 ## 快速开始
 
@@ -110,6 +110,16 @@ MCP 工具 schema 见 [`docs/mcp-tools.md`](./docs/mcp-tools.md)（M3）。
 - **踢人黑名单**：踢出后写 `room_bans`，再加入返回 `ROOM_BANNED`
 - **消息幂等**：`client_msg_id` 唯一索引，弱网重发不重复入库
 - **限流**：登录 / 注册 / 发消息 / WS 连接，全部内存滑窗（单 VPS 够用）
+
+## 部署
+
+完整 VPS 部署步骤见 [`deploy/README.md`](./deploy/README.md)。要点：
+
+- Nginx 反代 `/api`、`/ws`、`/mcp` → 后端 3000；`/` → 前端 `dist`
+- PM2 单实例 fork 拉起后端（`ecosystem.config.cjs`）
+- WS 路径需 `proxy_read_timeout 3600s` + Upgrade/Connection 头
+- SQLite 用 `sqlite3 .backup` 做在线热备份（不要直接 cp，WAL 模式不安全）
+- Let's Encrypt + HSTS + CSP（前端无 inline script）
 
 ## 许可
 

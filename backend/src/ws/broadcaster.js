@@ -32,7 +32,7 @@ export function emitMessageCreated(message) {
 
 /**
  * @param {number} roomId
- * @param {{ id:number, nickname:string, avatar:string }} user
+ * @param {{ id:number, username:string, nickname:string, avatar:string }} user
  */
 export function emitMemberJoined(roomId, user) {
   hub.broadcastRoom(roomId, {

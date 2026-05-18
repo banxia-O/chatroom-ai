@@ -87,6 +87,12 @@ export class WsClient {
     if (this.ready) this.send({ type: 'unsubscribe', data: { room_id: roomId } });
   }
 
+  /** typing 是 fire-and-forget，无 ack，无重发 */
+  sendTyping(roomId: number, isTyping: boolean) {
+    if (!this.ready) return;
+    this.send({ type: 'typing', data: { room_id: roomId, is_typing: isTyping } });
+  }
+
   /** 发消息。等 send:ack，超时即抛。重发同 client_msg_id 幂等。 */
   async sendMessage(roomId: number, content: string, clientMsgId: string) {
     const payload = { room_id: roomId, content, client_msg_id: clientMsgId };

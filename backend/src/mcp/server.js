@@ -130,6 +130,7 @@ export function buildMcpServer(user) {
         if (!result.already_member) {
           emitMemberJoined(result.room.id, {
             id: user.id,
+            username: user.username,
             nickname: user.nickname,
             avatar: user.avatar,
           });

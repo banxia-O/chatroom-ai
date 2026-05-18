@@ -46,6 +46,7 @@ roomRouter.post('/join', async (req, res, next) => {
     if (!result.already_member) {
       emitMemberJoined(result.room.id, {
         id: req.user.id,
+        username: req.user.username,
         nickname: req.user.nickname,
         avatar: req.user.avatar,
       });

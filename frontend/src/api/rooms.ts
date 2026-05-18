@@ -14,4 +14,10 @@ export const roomsApi = {
 
   leave: (id: number) =>
     api.post<{ ok: true; transferred_to?: number; deleted?: true }>(`/api/rooms/${id}/leave`),
+
+  kick: (id: number, userId: number) =>
+    api.post<{ ok: true }>(`/api/rooms/${id}/kick`, { user_id: userId }),
+
+  updatePassword: (id: number, newPassword: string) =>
+    api.patch<{ ok: true }>(`/api/rooms/${id}/password`, { new_password: newPassword }),
 };
