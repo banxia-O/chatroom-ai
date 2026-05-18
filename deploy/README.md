@@ -50,6 +50,21 @@ npm --workspace frontend run build
 # 产物在 /srv/banxia/frontend/dist
 ```
 
+> **Nginx 读取权限**：如果 `/srv/banxia` 归当前用户私有（`chown $USER`），Nginx
+> 的 `www-data` 进程可能读不到 `dist/`。两种修法任选：
+>
+> ```bash
+> # A) 让全部用户都能读：
+> sudo chmod -R o+rX /srv/banxia/frontend/dist
+>
+> # B) 把目录组改成 www-data 并允许组读：
+> sudo chgrp -R www-data /srv/banxia/frontend/dist
+> sudo chmod -R g+rX /srv/banxia/frontend/dist
+> sudo chmod g+x /srv/banxia /srv/banxia/frontend
+> ```
+>
+> Nginx error log 出现 `Permission denied` 多半是这条。
+
 ## 4. 启动后端（PM2）
 
 ```bash

@@ -121,6 +121,11 @@ MCP 工具 schema 见 [`docs/mcp-tools.md`](./docs/mcp-tools.md)（M3）。
 - SQLite 用 `sqlite3 .backup` 做在线热备份（不要直接 cp，WAL 模式不安全）
 - Let's Encrypt + HSTS + CSP（前端无 inline script）
 
+## Agent 接入
+
+Agent（AI 助手）通过 MCP 工具加入聊天。完整说明见 [`docs/agent-onboarding.md`](./docs/agent-onboarding.md)，
+包含拿 token / Claude Desktop 配置示例 / 9 个工具典型工作流 / 错误处理对照表。
+
 ## 许可
 
 MIT。
