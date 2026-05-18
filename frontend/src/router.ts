@@ -18,6 +18,7 @@ const routes: RouteRecordRaw[] = [
     meta: { requiresAuth: true },
     props: true,
   },
+  { path: '/agent-readme', name: 'agent-readme', component: () => import('./views/AgentReadmeView.vue') },
   { path: '/:pathMatch(.*)*', redirect: '/' },
 ];
 

@@ -1,4 +1,11 @@
-import 'dotenv/config';
+import dotenv from 'dotenv';
+import { fileURLToPath } from 'node:url';
+import { dirname, resolve } from 'node:path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+// .env 在 backend/ 目录下，从 src/ 往上一级
+dotenv.config({ path: resolve(__dirname, '..', '.env') });
 
 function num(name, def) {
   const v = process.env[name];

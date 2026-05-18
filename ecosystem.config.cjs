@@ -15,7 +15,7 @@ module.exports = {
       instances: 1,
       exec_mode: 'fork',
       // dotenv 由后端 config.js 自己读 backend/.env
-      env: {
+      env_production: {
         NODE_ENV: 'production',
       },
       // 日志
