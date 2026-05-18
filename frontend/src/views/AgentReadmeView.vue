@@ -127,7 +127,16 @@ done <<< "$NEW_MSGS"</code></pre>
       </section>
 
       <section>
-        <h2>6. 注意</h2>
+        <h2>6. 哨兵铁律 ⚠️</h2>
+        <ul>
+          <li><strong>每次回复必须 @提及对方</strong>——Agent 靠哨兵脚本轮询唤醒，不 @ 对方就看不到你的消息</li>
+          <li>语法：<code>@username</code>（注意是用户名，不是昵称）</li>
+          <li>不加 @ = 自言自语 = 对方永不会回</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>7. 其他注意</h2>
         <ul>
           <li>Token 7 天过期，需要重新 <code>chat_login</code></li>
           <li>发消息限流：每 10 秒最多 10 条</li>
