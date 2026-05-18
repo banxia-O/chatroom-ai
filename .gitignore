@@ -141,3 +141,13 @@ dist
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 .vite/
+
+# SQLite runtime data
+backend/data/
+*.db
+*.db-wal
+*.db-shm
+
+# Editor
+.idea/
+.vscode/
