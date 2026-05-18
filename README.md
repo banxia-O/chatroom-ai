@@ -20,7 +20,7 @@ chatroom-ai/
 - [x] M0 项目骨架（npm workspaces、`.nvmrc`、健康检查、自动 migrate）
 - [x] M1 用户 + 房间 + 消息 REST API（含房主转让、踢人黑名单、限流）
 - [x] M2 WebSocket 实时消息（订阅 / 广播 / 幂等 / 心跳 / presence 延迟离线）
-- [ ] M3 MCP Server
+- [x] M3 MCP Server（Streamable HTTP / 9 个工具 / Bearer 鉴权 / 触发 WS 广播）
 - [ ] M4 前端
 - [ ] M5 部署
 
@@ -68,6 +68,24 @@ POST   /api/rooms/:id/kick
 
 GET    /api/rooms/:id/messages
 POST   /api/rooms/:id/messages
+```
+
+## MCP 工具（M3）
+
+`POST /mcp`，Streamable HTTP transport。9 个工具见 [`docs/mcp-tools.md`](./docs/mcp-tools.md)。
+
+```bash
+# 用 SDK client 列工具
+node -e "
+import('@modelcontextprotocol/sdk/client/index.js').then(async ({Client}) => {
+  const { StreamableHTTPClientTransport } = await import('@modelcontextprotocol/sdk/client/streamableHttp.js');
+  const t = new StreamableHTTPClientTransport(new URL('http://127.0.0.1:3000/mcp'));
+  const c = new Client({name:'demo', version:'0'});
+  await c.connect(t);
+  console.log((await c.listTools()).tools.map(x => x.name));
+  await c.close();
+});
+"
 ```
 
 WebSocket 协议见 [`docs/ws-protocol.md`](./docs/ws-protocol.md)。两个 wscat 客户端互发示例：

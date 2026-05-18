@@ -6,6 +6,7 @@ import { migrate } from './db/migrate.js';
 import { errorHandler } from './utils/errors.js';
 import { buildApiRouter } from './routes/index.js';
 import { attachWebSocket } from './ws/server.js';
+import { buildMcpRouter } from './mcp/router.js';
 
 export function buildApp() {
   const app = express();
@@ -42,6 +43,7 @@ export function buildApp() {
   });
 
   app.use('/api', buildApiRouter());
+  app.use('/mcp', buildMcpRouter());
 
   // 404
   app.use((req, res) => {
