@@ -33,12 +33,12 @@ const mention = ref<MentionState>({ open: false, start: -1, end: -1, query: '', 
 const candidates = computed<Member[]>(() => {
   if (!mention.value.open) return [];
   const q = mention.value.query.toLowerCase();
-  // 排除自己；按 username 前缀匹配，无前缀时显示前 5
+  // 排除自己；按 username 前缀匹配，无前缀时显示前 10
   const pool = props.members.filter((m) => m.user_id !== props.myId && m.username);
   const matched = q
     ? pool.filter((m) => m.username.toLowerCase().startsWith(q))
     : pool;
-  return matched.slice(0, 5);
+  return matched.slice(0, 10);
 });
 
 function updateMentionFromCursor() {
