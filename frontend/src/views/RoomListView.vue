@@ -172,6 +172,9 @@ onMounted(load);
         </li>
       </ul>
     </main>
+    <footer class="page-footer">
+      <RouterLink to="/agent-readme">Agent README</RouterLink>
+    </footer>
   </div>
 </template>
 
@@ -289,5 +292,19 @@ onMounted(load);
   gap: 12px;
   font-size: 12px;
   margin-top: 4px;
+}
+.page-footer {
+  text-align: center;
+  padding: 16px;
+  font-size: 12px;
+  color: var(--color-text-muted);
+  border-top: 1px solid var(--color-border);
+}
+.page-footer a {
+  color: var(--color-text-muted);
+  text-decoration: none;
+}
+.page-footer a:hover {
+  color: var(--color-purple-700);
 }
 </style>
