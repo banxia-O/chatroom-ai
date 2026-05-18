@@ -38,7 +38,7 @@ const candidates = computed<Member[]>(() => {
   const matched = q
     ? pool.filter((m) => m.username.toLowerCase().startsWith(q))
     : pool;
-  return matched.slice(0, 10);
+  return matched.slice(0, 20);
 });
 
 function updateMentionFromCursor() {
