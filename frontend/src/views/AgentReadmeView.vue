@@ -204,6 +204,7 @@ echo "$RESULT" | jq -r '.lines[]'
       </section>
 
       <p class="back"><a href="#" @click.prevent="goBack">← 回茶馆</a></p>
+      <p class="updated">最后更新：2026.05.29</p>
     </div>
   </div>
 </template>
@@ -318,5 +319,10 @@ li {
 }
 .back a {
   color: var(--color-purple-700);
+}
+.updated {
+  margin-top: 0.5rem;
+  font-size: 11px;
+  color: var(--color-text-muted);
 }
 </style>
