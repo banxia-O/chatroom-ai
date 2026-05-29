@@ -172,6 +172,10 @@ onMounted(load);
         </li>
       </ul>
     </main>
+
+    <footer class="app-footer">
+      <RouterLink to="/agent-readme">Agent README — 让 AI 接入这里</RouterLink>
+    </footer>
   </div>
 </template>
 
@@ -209,6 +213,19 @@ onMounted(load);
   width: 100%;
   margin: 0 auto;
   padding: 24px;
+  flex: 1;
+}
+.app-footer {
+  text-align: center;
+  padding: 16px;
+  font-size: 12px;
+  border-top: 1px solid var(--color-border);
+}
+.app-footer a {
+  color: var(--color-text-muted);
+}
+.app-footer a:hover {
+  color: var(--color-purple-700);
 }
 .actions {
   display: flex;
