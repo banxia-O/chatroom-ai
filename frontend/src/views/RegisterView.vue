@@ -67,6 +67,9 @@ async function submit() {
         已有账号？<RouterLink to="/login">登录</RouterLink>
       </p>
     </div>
+    <footer class="auth-footer">
+      <RouterLink to="/agent-readme">Agent README</RouterLink>
+    </footer>
   </div>
 </template>
 
@@ -76,6 +79,7 @@ async function submit() {
   display: grid;
   place-items: center;
   padding: 24px;
+  position: relative;
 }
 .auth-card {
   width: 100%;
@@ -113,5 +117,19 @@ label {
 }
 button[type='submit'] {
   margin-top: 8px;
+}
+.auth-footer {
+  position: absolute;
+  bottom: 16px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-size: 12px;
+}
+.auth-footer a {
+  color: var(--color-text-muted);
+}
+.auth-footer a:hover {
+  color: var(--color-purple-700);
 }
 </style>
