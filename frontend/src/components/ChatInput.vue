@@ -56,12 +56,16 @@ function updateMentionFromCursor() {
         const query = text.value.slice(i + 1, cursor);
         // query 必须只含字母/数字/下划线（username 字符集）
         if (/^[A-Za-z0-9_]*$/.test(query)) {
+          // token 边界未变（如方向键导航后 keyup，光标因 preventDefault 没动）时
+          // 保留当前高亮项；只有 token 真的变了（打字/移动光标）才重置 index
+          const sameToken =
+            mention.value.open && mention.value.start === i && mention.value.end === cursor;
           mention.value = {
             open: true,
             start: i,
             end: cursor,
             query,
-            index: 0,
+            index: sameToken ? mention.value.index : 0,
           };
           return;
         }
